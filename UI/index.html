@@ -38,10 +38,23 @@
             <p>Manage users: Add, Edit, Delete.</p>
         </section>
     </main>
+
+    <footer>
+        <p>© 2024 My SPA Interface. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.querySelectorAll('section').forEach(section => {
+                    section.style.display = 'none';
+                }); 
+                const targetId = event.target.getAttribute('href').substring(1);
+                document.getElementById(targetId).style.display = 'block';
+            });
+        });
+        document.getElementById('home').style.display = 'block';
+    </script>
 </body>
-
-<footer>
-    <p>© 2024 My SPA Interface. All rights reserved.</p>
-</footer>
-
 </html>
