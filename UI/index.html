@@ -41,7 +41,23 @@
 
         <section id="admin" style="display: none;">
             <h2>Admin Panel</h2>
-            <p>Manage users: Add, Edit, Delete.</p>
+            <h3>Add User</h3>
+            <form onsubmit="handleSubmit(event)">
+                <label for="new-username">New Username:</label>
+                <input type="text" id="new-username" name="new-username" required>
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new-password" required>
+                <button type="submit">Add User</button>
+            </form>
+		<h3>Edit User</h3>
+            <form onsubmit="handleSubmit(event)">
+                <label for="edit-username">Username to Edit:</label>
+                <input type="text" id="edit-username" name="edit-username" required>
+                <label for="edit-password">New Password:</label>
+                <input type="password" id="edit-password" name="edit-password" required>
+                <button type="submit">Edit User</button>
+            </form>
+
         </section>
 
         <section id="add" style="display: none;">
