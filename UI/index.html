@@ -93,11 +93,46 @@
             <h2>Error</h2>
             <p>Something went wrong! Please try again.</p>
         </section>
+
+        <section id="add" style="display: none;">
+            <h2>Add Information</h2>
+            <form>
+                <label for="info">New Information:</label>
+                <input type="text" id="info" name="info" required>
+                <button type="submit">Add</button>
+            </form>
+        </section>
+
+        <section id="edit" style="display: none;">
+            <h2>Edit Information</h2>
+            <form>
+                <label for="edit-info">Information ID:</label>
+                <input type="text" id="edit-info" name="edit-info" required>
+                <label for="new-info">New Value:</label>
+                <input type="text" id="new-info" name="new-info" required>
+                <button type="submit">Edit</button>
+            </form>
+        </section>
+
+        <section id="search" style="display: none;">
+            <h2>Search Information</h2>
+            <form>
+                <label for="search-query">Search Query:</label>
+                <input type="text" id="search-query" name="search-query" required>
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <section id="error" style="display: none;">
+            <h2>Error</h2>
+            <p>Something went wrong! Please try again.</p>
+        </section>
     </main>
 
-    <footer>
-        <p>© 2024 deko Technologies. All rights reserved.</p>
-    </footer>
+   <footer>
+    <p>Â© 2024 deko Technologies. All rights reserved.</p>
+</footer>
+
 
     <script>
         function handleSubmit(event) {
