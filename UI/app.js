@@ -161,3 +161,33 @@ const ObjInf = [
     }
 ];
 
+class Timetable {
+    #_objs;
+
+    constructor(objs = []) {
+        this.#_objs = objs;
+    }
+
+    // Метод для получения массива объектов с фильтрацией и пагинацией
+    getObjs(skip = 0, top = 10, filterConfig = {}) {
+        let filteredObjs = [...this.#_objs];
+
+        // Фильтрация по полям
+        if (filterConfig.author) {
+            filteredObjs = filteredObjs.filter(obj => obj.author === filterConfig.author);
+        }
+        if (filterConfig.subject) {
+            filteredObjs = filteredObjs.filter(obj => obj.subject === filterConfig.subject);
+        }
+        if (filterConfig.createdAt) {
+            filteredObjs = filteredObjs.filter(obj => 
+                new Date(obj.createdAt).toISOString().slice(0, 10) === filterConfig.createdAt);
+        }
+
+        // Сортировка по дате
+        filteredObjs.sort((a, b) => b.createdAt - a.createdAt);
+
+        // Пагинация
+        return filteredObjs.slice(skip, skip + top);
+    }
+}
