@@ -244,4 +244,15 @@ class Timetable {
         }
         return false;
     }
+
+    // Добавление массива объектов
+    addAll(objs) {
+        const invalidObjs = [];
+        objs.forEach(obj => {
+            if (!this.addObj(obj)) {
+                invalidObjs.push(obj);
+            }
+        });
+        return invalidObjs;
+    }
 }
