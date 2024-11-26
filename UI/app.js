@@ -209,4 +209,13 @@ class Timetable {
 
         return true;
     }
+
+    // Добавление объекта в коллекцию
+    addObj(obj) {
+        if (this.validateObj(obj)) {
+            this.#_objs.push(obj);
+            return true;
+        }
+        return false;
+    }
 }
