@@ -255,4 +255,9 @@ class Timetable {
         });
         return invalidObjs;
     }
+
+    // Очистка коллекции
+    clear() {
+        this.#_objs = [];
+    }
 }
