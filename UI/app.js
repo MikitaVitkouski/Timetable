@@ -234,4 +234,14 @@ class Timetable {
         Object.assign(obj, updatedFields);
         return true;
     }
+
+    // Удаление объекта по ID
+    removeObj(id) {
+        const index = this.#_objs.findIndex(obj => obj.id === id);
+        if (index !== -1) {
+            this.#_objs.splice(index, 1);
+            return true;
+        }
+        return false;
+    }
 }
