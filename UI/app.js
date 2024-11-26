@@ -218,4 +218,20 @@ class Timetable {
         }
         return false;
     }
+
+    // Изменение объекта по ID
+    editObj(id, updatedFields) {
+        const obj = this.getObj(id);
+        if (!obj) return false;
+
+        const allowedFields = ['description', 'subject', 'time'];
+        const isValidUpdate = Object.keys(updatedFields).every(
+            key => allowedFields.includes(key)
+        );
+
+        if (!isValidUpdate) return false;
+
+        Object.assign(obj, updatedFields);
+        return true;
+    }
 }
