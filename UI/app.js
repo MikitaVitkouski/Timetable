@@ -190,4 +190,11 @@ class Timetable {
         // Пагинация
         return filteredObjs.slice(skip, skip + top);
     }
+
+    // Получение объекта по ID
+    getObj(id) {
+        return this.#_objs.find(obj => obj.id === id) || null;
+    }
+
+    
 }
