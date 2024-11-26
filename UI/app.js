@@ -196,5 +196,17 @@ class Timetable {
         return this.#_objs.find(obj => obj.id === id) || null;
     }
 
-    
+    // Проверка объекта на валидность
+    validateObj(obj) {
+        const requiredFields = ['id', 'description', 'createdAt', 'author'];
+        if (!obj || typeof obj !== 'object') return false;
+
+        for (const field of requiredFields) {
+            if (!obj[field] || (field === 'description' && obj[field].length >= 200)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
