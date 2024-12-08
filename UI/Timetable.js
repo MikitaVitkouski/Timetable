@@ -1,4 +1,4 @@
-const ObjInf = [
+ObjInf = [
     {
         id: '1',
         description: 'Math Lecture - Room 101',
