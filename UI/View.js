@@ -3,13 +3,11 @@ class View {
         this.container = document.getElementById(containerId);
     }
 
-    // 1️⃣ Отображает все объекты на странице
     displayObjs(objList) {
-        this.container.innerHTML = ''; // Очистка контейнера
+        this.container.innerHTML = '';
         objList.forEach(obj => this.addObjToDOM(obj));
     }
 
-    // 2️⃣ Добавляет один объект на страницу
     addObjToDOM(obj) {
         const objElement = document.createElement('div');
         objElement.classList.add('obj');
@@ -19,24 +17,21 @@ class View {
             <p>${obj.description}</p>
             <p>Автор: ${obj.author}</p>
             <p>Дата: ${obj.createdAt.toLocaleString()}</p>
-            <button onclick="removeObj('${obj.id}')">Удалить</button>
-            <button onclick="editObj('${obj.id}', { description: 'Новое описание' })">Редактировать</button>
+            ${user ? `<button class="delete-btn" data-id="${obj.id}">Удалить</button>
+                      <button class="edit-btn" data-id="${obj.id}">Редактировать</button>` : ''}
         `;
         this.container.appendChild(objElement);
     }
 
-    // 3️⃣ Удаляет объект из DOM по ID
     removeObjFromDOM(id) {
         const objElement = this.container.querySelector(`[data-id="${id}"]`);
         if (objElement) this.container.removeChild(objElement);
     }
 
-    // 4️⃣ Обновляет объект на странице
     updateObjInDOM(id, newProps) {
         const objElement = this.container.querySelector(`[data-id="${id}"]`);
         if (objElement && newProps.description) {
-            const descriptionElement = objElement.querySelector('p:nth-child(2)');
-            descriptionElement.textContent = newProps.description;
+            objElement.querySelector('p:nth-child(2)').textContent = newProps.description;
         }
     }
 }

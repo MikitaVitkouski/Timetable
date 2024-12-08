@@ -60,12 +60,25 @@
         </form>
     </section>
 
-    <section id="add" style="display: none;">
+    <section id="add">
         <h2>Add Information</h2>
-        <form>
-            <label for="info">New Information:</label>
-            <input type="text" id="info" name="info" required>
+        <form id="add-form">
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" required>
             <button type="submit">Add</button>
+        </form>
+    </section>
+
+    <section id="filter">
+        <h2>Filter Information</h2>
+        <form id="filter-form">
+            <label for="filter-author">Author:</label>
+            <input type="text" id="filter-author" name="filter-author">
+            <label for="filter-subject">Subject:</label>
+            <input type="text" id="filter-subject" name="filter-subject">
+            <button type="submit">Filter</button>
         </form>
     </section>
 
@@ -131,5 +144,6 @@
 <script src="View.js"></script>
 <script src="Timetable.js"></script>
 <script src="test.js"></script>
+<script src="Controller.js"></script>
 </body>
 </html>

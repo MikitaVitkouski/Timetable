@@ -180,7 +180,7 @@ class Timetable {
             filteredObjs = filteredObjs.filter(obj => obj.subject === filterConfig.subject);
         }
         if (filterConfig.createdAt) {
-            filteredObjs = filteredObjs.filter(obj => 
+            filteredObjs = filteredObjs.filter(obj =>
                 new Date(obj.createdAt).toISOString().slice(0, 10) === filterConfig.createdAt);
         }
 
