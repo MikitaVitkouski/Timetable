@@ -20,6 +20,7 @@ class View {
             ${user ? `<button class="delete-btn" data-id="${obj.id}">Удалить</button>
                       <button class="edit-btn" data-id="${obj.id}">Редактировать</button>` : ''}
         `;
+
         this.container.appendChild(objElement);
     }
 

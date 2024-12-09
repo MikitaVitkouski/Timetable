@@ -1,41 +1,32 @@
-// Создание экземпляра класса Timetable
-const timetable = new Timetable(ObjInf);
-
-// Проверка методов
-console.log(timetable.getObjs(0, 5)); // Получить первые 5 записей
-console.log(timetable.getObjs(0, 5, { author: 'John Doe' })); // Фильтрация по автору
-
-console.log(timetable.getObj('1')); // Получить объект с id = '1'
-
-console.log(timetable.validateObj({
+controller.addObj({
     id: '21',
     description: 'Chemistry Lecture - Room 103',
     createdAt: new Date(),
-    author: 'New Author'
-})); // true
+    author: 'Gabasov',
+    subject: 'Chemistry',
+    time: '11:00 AM'
+});
 
-console.log(timetable.addObj({
-    id: '21',
-    description: 'Chemistry Lecture - Room 103',
+controller.addObj({
+    id: '22',
+    description: 'MO Practice - Room 105',
     createdAt: new Date(),
-    author: 'New Author'
-})); // true
+    author: 'Alsevich',
+    subject: 'MO',
+    time: '09:00 AM'
+});
 
-console.log(timetable.editObj('21', { description: 'Updated Description' })); // true
-console.log(timetable.removeObj('21')); // true
+allObjects = controller.getObjList();
+console.log(allObjects);
 
-console.log(timetable.addAll([
-    {
-        id: '22',
-        description: 'Biology Lecture - Room 104',
-        createdAt: new Date(),
-        author: 'Another Author'
-    },
-    {
-        id: '23',
-        description: 'Invalid Entry Without Author'
-    }
-])); // Возвращает массив с невалидными объектами
+controller.removeObj('21');
 
-timetable.clear(); // Очистка коллекции
-console.log(timetable.getObjs()); // []
+controller.editObj('22', { description: 'Physics Lab - Updated Description' });
+
+allObjects = controller.getObjList();
+console.log(allObjects);
+
+controller.filterObjs({ author: 'John Doe' });
+
+timetable.clear();
+controller.view.displayObjs([]);

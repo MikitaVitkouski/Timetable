@@ -1,63 +1,46 @@
+const user = 'Ivan Ivanov';
+
 class Controller {
-    constructor(view, model) {
+    constructor(timetable, view) {
+        this.timetable = timetable;
         this.view = view;
-        this.model = model;
-        this.initialize();
+        this.init();
     }
 
-    initialize() {
-        this.view.displayObjs(this.model.getObjs());
-
-        // Добавление объекта
-        document.getElementById('add-form').addEventListener('submit', (e) => this.handleAdd(e));
-
-        // Обработка кликов для удаления и редактирования
-        document.getElementById('obj-container').addEventListener('click', (e) => this.handleObjActions(e));
-
-        // Обработка фильтрации
-        document.getElementById('filter-form').addEventListener('submit', (e) => this.handleFilter(e));
-
-        this.handleNavigation();
+    init() {
+        this.view.displayObjs(this.timetable.getObjs());
     }
 
-    handleAdd(e) {
-        e.preventDefault();
-        const subject = document.getElementById('subject').value;
-        const description = document.getElementById('description').value;
-        const newObj = {
-            id: Date.now().toString(),
-            subject,
-            description,
-            createdAt: new Date(),
-            author: user
-        };
-
-        if (this.model.addObj(newObj)) {
-            this.view.addObjToDOM(newObj);
+    addObj(obj) {
+        if (this.timetable.addObj(obj)) {
+            this.view.addObjToDOM(obj);
+        } else {
+            console.error('Invalid object:', obj);
         }
     }
 
-    handleObjActions(e) {
-        if (e.target.classList.contains('delete-btn')) {
-            const id = e.target.dataset.id;
-            this.model.removeObj(id);
+    removeObj(id) {
+        if (this.timetable.removeObj(id)) {
             this.view.removeObjFromDOM(id);
-        } else if (e.target.classList.contains('edit-btn')) {
-            const id = e.target.dataset.id;
-            const newDescription = prompt('Введите новое описание:');
-            if (newDescription) {
-                this.model.editObj(id, { description: newDescription });
-                this.view.updateObjInDOM(id, { description: newDescription });
-            }
         }
     }
 
-    handleFilter(e) {
-        e.preventDefault();
-        const author = document.getElementById('filter-author').value;
-        const subject = document.getElementById('filter-subject').value;
+    editObj(id, newProps) {
+        if (this.timetable.editObj(id, newProps)) {
+            this.view.updateObjInDOM(id, newProps);
+        }
+    }
 
-        const filteredObjs = this.model.getObjs(0, 10, { author, subject });
+    filterObjs(filterConfig) {
+        const filteredObjs = this.timetable.getObjs(0, 10, filterConfig);
         this.view.displayObjs(filteredObjs);
     }
+
+    getObjList() {
+        return this.timetable.getObjs();
+    }
 }
+
+const timetable = new Timetable(ObjInf);
+const view = new View('obj-container');
+const controller = new Controller(timetable, view);

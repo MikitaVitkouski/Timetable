@@ -168,11 +168,8 @@ class Timetable {
         this.#_objs = objs;
     }
 
-    // Метод для получения массива объектов с фильтрацией и пагинацией
     getObjs(skip = 0, top = 10, filterConfig = {}) {
         let filteredObjs = [...this.#_objs];
-
-        // Фильтрация по полям
         if (filterConfig.author) {
             filteredObjs = filteredObjs.filter(obj => obj.author === filterConfig.author);
         }
@@ -181,36 +178,21 @@ class Timetable {
         }
         if (filterConfig.createdAt) {
             filteredObjs = filteredObjs.filter(obj =>
-                new Date(obj.createdAt).toISOString().slice(0, 10) === filterConfig.createdAt);
+                new Date(obj.createdAt).toISOString().slice(0, 10) === filterConfig.createdAt
+            );
         }
-
-        // Сортировка по дате
         filteredObjs.sort((a, b) => b.createdAt - a.createdAt);
-
-        // Пагинация
         return filteredObjs.slice(skip, skip + top);
     }
 
-    // Получение объекта по ID
     getObj(id) {
-        return this.#_objs.find(obj => obj.id === id) || null;
+        return this.#_objs.find(obj => obj.id === id);
     }
 
-    // Проверка объекта на валидность
     validateObj(obj) {
-        const requiredFields = ['id', 'description', 'createdAt', 'author'];
-        if (!obj || typeof obj !== 'object') return false;
-
-        for (const field of requiredFields) {
-            if (!obj[field] || (field === 'description' && obj[field].length >= 200)) {
-                return false;
-            }
-        }
-
-        return true;
+        return obj && obj.id && obj.description && obj.author && obj.createdAt;
     }
 
-    // Добавление объекта в коллекцию
     addObj(obj) {
         if (this.validateObj(obj)) {
             this.#_objs.push(obj);
@@ -219,23 +201,15 @@ class Timetable {
         return false;
     }
 
-    // Изменение объекта по ID
-    editObj(id, updatedFields) {
+    editObj(id, newProps) {
         const obj = this.getObj(id);
-        if (!obj) return false;
-
-        const allowedFields = ['description', 'subject', 'time'];
-        const isValidUpdate = Object.keys(updatedFields).every(
-            key => allowedFields.includes(key)
-        );
-
-        if (!isValidUpdate) return false;
-
-        Object.assign(obj, updatedFields);
-        return true;
+        if (obj) {
+            Object.assign(obj, newProps);
+            return true;
+        }
+        return false;
     }
 
-    // Удаление объекта по ID
     removeObj(id) {
         const index = this.#_objs.findIndex(obj => obj.id === id);
         if (index !== -1) {
@@ -245,18 +219,6 @@ class Timetable {
         return false;
     }
 
-    // Добавление массива объектов
-    addAll(objs) {
-        const invalidObjs = [];
-        objs.forEach(obj => {
-            if (!this.addObj(obj)) {
-                invalidObjs.push(obj);
-            }
-        });
-        return invalidObjs;
-    }
-
-    // Очистка коллекции
     clear() {
         this.#_objs = [];
     }
