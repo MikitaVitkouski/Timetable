@@ -1,3 +1,5 @@
+console.log(timetable.getObjs());
+
 controller.addObj({
     id: '21',
     description: 'Chemistry Lecture - Room 103',
@@ -21,12 +23,13 @@ console.log(allObjects);
 
 controller.removeObj('21');
 
-controller.editObj('22', { description: 'Physics Lab - Updated Description' });
+controller.editObj('22', { description: 'Maths class' });
 
 allObjects = controller.getObjList();
 console.log(allObjects);
 
-controller.filterObjs({ author: 'John Doe' });
+const filteredData = controller.filterObjs({ author: 'John Doe' });
+console.log(filteredData);
 
 timetable.clear();
 controller.view.displayObjs([]);

@@ -1,4 +1,4 @@
-const user = 'Ivan Ivanov';
+var user = "Nikita Vitkovskiy";
 
 class Controller {
     constructor(timetable, view) {
@@ -32,9 +32,11 @@ class Controller {
     }
 
     filterObjs(filterConfig) {
-        const filteredObjs = this.timetable.getObjs(0, 10, filterConfig);
+        const filteredObjs = this.timetable.getObjs(0, 20, filterConfig);
         this.view.displayObjs(filteredObjs);
+        return filteredObjs;
     }
+
 
     getObjList() {
         return this.timetable.getObjs();

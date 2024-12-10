@@ -27,7 +27,7 @@ ObjInf = [
         id: '4',
         description: 'History Seminar - Room 104',
         createdAt: new Date('2024-01-16T11:00:00'),
-        author: 'Clara White',
+        author: 'John Doe',
         subject: 'History',
         time: '11:00 AM'
     },
@@ -43,7 +43,7 @@ ObjInf = [
         id: '6',
         description: 'Computer Science Lecture - Lab A',
         createdAt: new Date('2024-01-17T10:00:00'),
-        author: 'Michael Clark',
+        author: 'John Doe',
         subject: 'Computer Science',
         time: '10:00 AM'
     },
