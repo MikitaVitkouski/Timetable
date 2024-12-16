@@ -1,32 +1,44 @@
 class View {
     constructor(containerId) {
-        this.containerId = containerId;
+        this.container = document.getElementById(containerId);  // Контейнер для отображения объектов
     }
 
-    // Отображаем объекты расписания на странице
-    displayObjs(objs) {
-        const container = document.getElementById(this.containerId);
-        container.innerHTML = '';  // Очищаем контейнер перед отображением
-        if (objs.length === 0) {
-            container.innerHTML = '<p>No records found.</p>';
+    displayObjs(objList) {
+        this.container.innerHTML = '';  // Очищаем контейнер перед обновлением
+
+        // Отображаем каждый объект на странице
+        objList.forEach(obj => this.addObjToDOM(obj));
+    }
+
+    addObjToDOM(obj) {
+        const objElement = document.createElement('div');
+        objElement.classList.add('obj');
+        objElement.setAttribute('data-id', obj.id);  // Уникальный идентификатор для объекта
+
+        objElement.innerHTML = `
+            <h3>${obj.subject}</h3>
+            <p>${obj.description}</p>
+            <p>Time: ${obj.time}</p>
+            <p>Room: ${obj.room}</p>
+            <p>Teacher: ${obj.teacher}</p>
+            <p>Author: ${obj.author}</p>
+            <p>Created: ${new Date(obj.createdAt).toLocaleString()}</p>
+            <button class="delete-btn" data-id="${obj.id}">Delete</button>
+            <button class="edit-btn" data-id="${obj.id}">Edit</button>
+        `;
+
+        this.container.appendChild(objElement);  // Добавляем объект в контейнер
+    }
+
+    removeObjFromDOM(id) {
+        const objElement = this.container.querySelector(`[data-id="${id}"]`);
+        if (objElement) this.container.removeChild(objElement);  // Удаление объекта из DOM
+    }
+
+    updateObjInDOM(id, newProps) {
+        const objElement = this.container.querySelector(`[data-id="${id}"]`);
+        if (objElement && newProps.description) {
+            objElement.querySelector('p:nth-child(2)').textContent = newProps.description;  // Обновление описания
         }
-        objs.forEach(obj => {
-            container.innerHTML += `
-                <div id="obj-${obj.id}">
-                    <h4>${obj.subject}</h4>
-                    <p>${obj.description}</p>
-                    <p>Автор: ${obj.author}</p>
-                    <p>Время: ${obj.time}</p>
-                    <p>Дата создания: ${new Date(obj.createdAt).toLocaleString()}</p>
-                    <button onclick="controller.removeObj(${obj.id})">Удалить</button>
-                    <button onclick="controller.editObj(${obj.id}, ${JSON.stringify(obj)})">Редактировать</button>
-                </div>
-            `;
-        });
-    }
-
-    // Показываем уведомление
-    showNotification(message) {
-        alert(message);
     }
 }

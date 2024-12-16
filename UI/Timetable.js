@@ -1,54 +1,69 @@
 class Timetable {
-    constructor(objInf) {
-        this.objInf = objInf;  // Инициализация с данными
+    #_objs;
+
+    constructor(objs = []) {
+        this.#_objs = objs;
     }
 
-    async getObjs(filterConfig = {}) {
-        // Получение данных с сервера (по умолчанию все объекты)
-        const queryParams = new URLSearchParams(filterConfig).toString();
-        const response = await fetch(`/api/timetable?${queryParams}`);
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Error fetching timetable data');
+    getObjs(skip = 0, top = 10, filterConfig = {}) {
+        let filteredObjs = [...this.#_objs];
+
+        if (filterConfig.subject) {
+            filteredObjs = filteredObjs.filter(obj => obj.subject.toLowerCase().includes(filterConfig.subject.toLowerCase()));
+        }
+
+        if (filterConfig.room) {
+            filteredObjs = filteredObjs.filter(obj => obj.room.toLowerCase().includes(filterConfig.room.toLowerCase()));
+        }
+
+        if (filterConfig.teacher) {
+            filteredObjs = filteredObjs.filter(obj => obj.teacher.toLowerCase().includes(filterConfig.teacher.toLowerCase()));
+        }
+
+        return filteredObjs.slice(skip, skip + top);
+    }
+
+    addObj(subject, description, time, room, teacher, author) {
+        const newObj = {
+            id: Date.now().toString(),
+            subject,
+            description,
+            time,
+            room,
+            teacher,
+            createdAt: new Date(),
+            author
+        };
+        this.#_objs.push(newObj);
+        this.save();  // Сохраняем изменения в localStorage
+    }
+
+    removeObj(id) {
+        const index = this.#_objs.findIndex(obj => obj.id === id);
+        if (index !== -1) {
+            this.#_objs.splice(index, 1);
+            this.save();  // Сохраняем изменения в localStorage
         }
     }
 
-    async addObj(obj) {
-        // Отправляем POST-запрос на добавление нового объекта в расписание
-        const response = await fetch('/api/timetable', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(obj),
-        });
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Error adding timetable object');
+    editObj(id, newProps) {
+        const obj = this.#_objs.find(obj => obj.id === id);
+        if (obj) {
+            Object.assign(obj, newProps);
+            this.save();  // Сохраняем изменения в localStorage
         }
     }
 
-    async removeObj(id) {
-        // Отправляем DELETE-запрос на удаление объекта по ID
-        const response = await fetch(`/api/timetable/${id}`, {
-            method: 'DELETE',
-        });
-        if (!response.ok) {
-            throw new Error('Error removing timetable object');
-        }
+    // Сохраняем объекты в localStorage
+    save() {
+        localStorage.setItem('timetable', JSON.stringify(this.#_objs));
     }
 
-    async editObj(id, newProps) {
-        // Отправляем PUT-запрос на обновление объекта по ID
-        const response = await fetch(`/api/timetable/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newProps),
-        });
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Error editing timetable object');
+    // Восстанавливаем объекты из localStorage
+    restore() {
+        const savedObjs = JSON.parse(localStorage.getItem('timetable'));
+        if (savedObjs) {
+            this.#_objs = savedObjs;
         }
     }
 }

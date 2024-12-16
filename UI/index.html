@@ -23,13 +23,11 @@
 </header>
 
 <main id="main-content">
-    <!-- Main page -->
     <section id="home">
         <h2>Main Page</h2>
         <p>Welcome to the Single Page Application "Timetable!"</p>
     </section>
 
-    <!-- Login form -->
     <section id="login" style="display: none;">
         <h2>Login Form</h2>
         <form>
@@ -41,87 +39,158 @@
         </form>
     </section>
 
-    <!-- Add Information -->
-    <section id="add">
-    <h2>Add Information</h2>
-    <form id="add-form">
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" required>
+    <section id="admin" style="display: none;">
+        <h2>Admin Panel</h2>
+        <h3>Add User</h3>
+        <form onsubmit="handleSubmit(event)">
+            <label for="new-username">New Username:</label>
+            <input type="text" id="new-username" name="new-username" required>
+            <label for="new-password">New Password:</label>
+            <input type="password" id="new-password" name="new-password" required>
+            <button type="submit">Add User</button>
+        </form>
 
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea>
-
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author" required>
-
-        <label for="time">Time:</label>
-        <input type="time" id="time" name="time" required>
-
-        <button type="submit">Add</button>
-    </form>
-</section>
-
-<!-- Edit Information -->
-<section id="edit">
-    <h2>Edit Information</h2>
-    <form id="edit-form">
-        <label for="edit-id">ID:</label>
-        <input type="text" id="edit-id" name="edit-id" required>
-
-        <label for="edit-subject">New Subject:</label>
-        <input type="text" id="edit-subject" name="edit-subject" required>
-
-        <label for="edit-description">New Description:</label>
-        <textarea id="edit-description" name="edit-description" required></textarea>
-
-        <label for="edit-author">New Author:</label>
-        <input type="text" id="edit-author" name="edit-author" required>
-
-        <label for="edit-time">New Time:</label>
-        <input type="time" id="edit-time" name="edit-time" required>
-
-        <button type="submit">Update</button>
-    </form>
-</section>
-
-
-    <!-- Search Information -->
-    <section id="search">
-    <h2>Поиск информации</h2>
-    <form id="search-form">
-        <label for="search-subject">Тема:</label>
-        <input type="text" id="search-subject" name="subject">
-
-        <label for="search-author">Автор:</label>
-        <input type="text" id="search-author" name="author">
-
-        <label for="search-time">Время:</label>
-        <input type="time" id="search-time" name="time">
-
-        <button type="submit">Поиск</button>
+        <h3>Edit User</h3>
+        <form onsubmit="handleSubmit(event)">
+            <label for="edit-username">Username to Edit:</label>
+            <input type="text" id="edit-username" name="edit-username" required>
+            <label for="edit-password">New Password:</label>
+            <input type="password" id="edit-password" name="edit-password" required>
+            <button type="submit">Edit User</button>
         </form>
     </section>
 
-    <form id="filter-form">
-    <input type="text" id="search-subject" placeholder="Поиск по предмету">
-    <input type="text" id="search-author" placeholder="Поиск по автору">
-    <input type="text" id="search-time" placeholder="Поиск по времени">
-    <button type="submit">Фильтровать</button>
-</form>
+    <form id="add-form">
+    <input type="text" id="subject" placeholder="Subject" required>
+    <textarea id="description" placeholder="Description"></textarea>
+    <input type="text" id="time" placeholder="Time" required>
+    <input type="text" id="room" placeholder="Room" required>
+    <input type="text" id="teacher" placeholder="Teacher" required>
+    <input type="text" id="author" placeholder="Author" disabled> <!-- Author будет фиксированным -->
+    <button type="submit">Add Info</button>
+        </form>
 
 
+        <form id="filter-form">
+    <input type="text" id="filter-subject" placeholder="Filter by Subject">
+    <input type="text" id="filter-room" placeholder="Filter by Room">
+    <input type="text" id="filter-teacher" placeholder="Filter by Teacher">
+    <button type="submit">Apply Filter</button>
+        </form>
 
-    <!-- Timetable Section -->
-    <section id="obj-container">
-        <h2>Timetable</h2>
-        <div id="timetable-list"></div>
+
+    <section id="edit" style="display: none;">
+    <h2>Edit Information</h2>
+    <form id="edit-form">
+        <label for="edit-id">Information ID:</label>
+        <input type="text" id="edit-id" name="edit-id" required>
+        <label for="edit-subject">Subject:</label>
+        <input type="text" id="edit-subject" name="edit-subject" required>
+        <label for="edit-description">Description:</label>
+        <textarea id="edit-description" name="edit-description"></textarea>
+        <label for="edit-time">Time:</label>
+        <input type="text" id="edit-time" name="edit-time" required>
+        <label for="edit-room">Room:</label>
+        <input type="text" id="edit-room" name="edit-room" required>
+        <label for="edit-teacher">Teacher:</label>
+        <input type="text" id="edit-teacher" name="edit-teacher" required>
+        <button type="submit">Edit Info</button>
+    </form>
+</section>
+
+
+    <section id="search" style="display: none;">
+        <h2>Search Information</h2>
+        <form>
+            <label for="search-query">Search Query:</label>
+            <input type="text" id="search-query" name="search-query" required>
+            <button type="submit">Search</button>
+        </form>
     </section>
 
+    <section id="error" style="display: none;">
+        <h2>Error</h2>
+        <p>Something went wrong! Please try again.</p>
+    </section>
+
+    <section id="obj-container">
+        <h2>Timetable</h2>
+    </section>
 </main>
 
+<!-- Scripts to load classes -->
 <script src="View.js"></script>
 <script src="Timetable.js"></script>
 <script src="Controller.js"></script>
-<script src="app.js"></script>
+
+<script>
+    const view = new View('obj-container');
+    const timetable = new Timetable();  // Create a timetable instance
+    const controller = new Controller(view, timetable);  // Pass the view and timetable to the controller
+
+    // Handling Add Info Form
+    document.getElementById('add-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const subject = document.getElementById('subject').value;
+        const description = document.getElementById('description').value;
+        const time = document.getElementById('time').value;
+        const room = document.getElementById('room').value;
+        const teacher = document.getElementById('teacher').value;
+        const author = 'Mikita Vitkouski'; // Replace with logged-in user if needed
+
+        controller.addObj(subject, description, time, room, teacher, author);
+    });
+
+    // Handling Edit Info Form
+        document.getElementById('edit-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit-id').value;
+        const subject = document.getElementById('edit-subject').value;
+        const description = document.getElementById('edit-description').value;
+        const time = document.getElementById('edit-time').value;
+        const room = document.getElementById('edit-room').value;
+        const teacher = document.getElementById('edit-teacher').value;
+
+        controller.editObj(id, subject, description, time, room, teacher);
+    });
+
+
+    // Handling Filter Form
+    document.getElementById('filter-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const subjectFilter = document.getElementById('filter-subject').value;
+        const roomFilter = document.getElementById('filter-room').value;
+        const teacherFilter = document.getElementById('filter-teacher').value;
+
+        controller.filterObjs(subjectFilter, roomFilter, teacherFilter);
+    });
+
+    // Handling Delete and Edit buttons
+    document.getElementById('obj-container').addEventListener('click', (e) => {
+    const id = e.target.getAttribute('data-id');
+    if (e.target.classList.contains('delete-btn')) {
+        controller.deleteObj(id);
+    }
+    if (e.target.classList.contains('edit-btn')) {
+        const obj = timetable.objList.find(o => o.id === id);
+        if (obj) {
+            console.log("Edit button clicked:", obj); // Добавлено для отладки
+
+            // Заполнение формы для редактирования
+            document.getElementById('edit-id').value = obj.id;
+            document.getElementById('edit-subject').value = obj.subject;
+            document.getElementById('edit-description').value = obj.description;
+            document.getElementById('edit-time').value = obj.time;
+            document.getElementById('edit-room').value = obj.room;
+            document.getElementById('edit-teacher').value = obj.teacher;
+
+            // Показ формы редактирования
+            document.getElementById('edit').style.display = 'block';
+        }
+    }
+});
+
+</script>
+
 </body>
 </html>
