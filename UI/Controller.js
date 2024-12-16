@@ -1,5 +1,3 @@
-var user = "Nikita Vitkovskiy";
-
 class Controller {
     constructor(timetable, view) {
         this.timetable = timetable;
@@ -8,41 +6,26 @@ class Controller {
     }
 
     init() {
-        this.view.displayObjs(this.timetable.getObjs());
+        this.loadTimetable();
     }
 
-    addObj(obj) {
-        if (this.timetable.addObj(obj)) {
-            this.view.addObjToDOM(obj);
-        } else {
-            console.error('Invalid object:', obj);
+    async loadTimetable() {
+        try {
+            const timetables = await this.timetable.getObjs();
+            this.view.displayObjs(timetables);
+        } catch (error) {
+            console.error('Error loading timetable:', error);
+            this.view.showNotification('Ошибка загрузки расписания');
         }
     }
 
-    removeObj(id) {
-        if (this.timetable.removeObj(id)) {
-            this.view.removeObjFromDOM(id);
+    async filterObjs(filterConfig) {
+        try {
+            const filteredObjs = await this.timetable.getObjs(filterConfig);
+            this.view.displayObjs(filteredObjs);
+        } catch (error) {
+            console.error('Error filtering timetable:', error);
+            this.view.showNotification('Ошибка фильтрации расписания');
         }
-    }
-
-    editObj(id, newProps) {
-        if (this.timetable.editObj(id, newProps)) {
-            this.view.updateObjInDOM(id, newProps);
-        }
-    }
-
-    filterObjs(filterConfig) {
-        const filteredObjs = this.timetable.getObjs(0, 20, filterConfig);
-        this.view.displayObjs(filteredObjs);
-        return filteredObjs;
-    }
-
-
-    getObjList() {
-        return this.timetable.getObjs();
     }
 }
-
-const timetable = new Timetable(ObjInf);
-const view = new View('obj-container');
-const controller = new Controller(timetable, view);

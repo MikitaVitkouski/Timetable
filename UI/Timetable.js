@@ -1,225 +1,54 @@
-ObjInf = [
-    {
-        id: '1',
-        description: 'Math Lecture - Room 101',
-        createdAt: new Date('2024-01-15T10:00:00'),
-        author: 'John Doe',
-        subject: 'Math',
-        time: '10:00 AM'
-    },
-    {
-        id: '2',
-        description: 'Physics Lab - Room 202',
-        createdAt: new Date('2024-01-15T12:00:00'),
-        author: 'Jane Smith',
-        subject: 'Physics',
-        time: '12:00 PM'
-    },
-    {
-        id: '3',
-        description: 'Chemistry Lecture - Room 303',
-        createdAt: new Date('2024-01-16T09:00:00'),
-        author: 'Alan Brown',
-        subject: 'Chemistry',
-        time: '9:00 AM'
-    },
-    {
-        id: '4',
-        description: 'History Seminar - Room 104',
-        createdAt: new Date('2024-01-16T11:00:00'),
-        author: 'John Doe',
-        subject: 'History',
-        time: '11:00 AM'
-    },
-    {
-        id: '5',
-        description: 'English Literature - Room 201',
-        createdAt: new Date('2024-01-16T01:00:00'),
-        author: 'Emily Green',
-        subject: 'English',
-        time: '1:00 PM'
-    },
-    {
-        id: '6',
-        description: 'Computer Science Lecture - Lab A',
-        createdAt: new Date('2024-01-17T10:00:00'),
-        author: 'John Doe',
-        subject: 'Computer Science',
-        time: '10:00 AM'
-    },
-    {
-        id: '7',
-        description: 'Philosophy Seminar - Room 306',
-        createdAt: new Date('2024-01-17T03:00:00'),
-        author: 'Sophia Miller',
-        subject: 'Philosophy',
-        time: '3:00 PM'
-    },
-    {
-        id: '8',
-        description: 'Economics Lecture - Room 402',
-        createdAt: new Date('2024-01-18T09:00:00'),
-        author: 'George Wilson',
-        subject: 'Economics',
-        time: '9:00 AM'
-    },
-    {
-        id: '9',
-        description: 'Music Class - Studio 1',
-        createdAt: new Date('2024-01-18T02:00:00'),
-        author: 'Emma Harris',
-        subject: 'Music',
-        time: '2:00 PM'
-    },
-    {
-        id: '10',
-        description: 'Art Workshop - Room 103',
-        createdAt: new Date('2024-01-19T10:00:00'),
-        author: 'Charlotte Lewis',
-        subject: 'Art',
-        time: '10:00 AM'
-    },
-    {
-        id: '11',
-        description: 'Biology Lecture - Room 305',
-        createdAt: new Date('2024-01-19T11:00:00'),
-        author: 'Liam Thompson',
-        subject: 'Biology',
-        time: '11:00 AM'
-    },
-    {
-        id: '12',
-        description: 'Astronomy Lab - Observatory',
-        createdAt: new Date('2024-01-20T08:00:00'),
-        author: 'Olivia Martinez',
-        subject: 'Astronomy',
-        time: '8:00 AM'
-    },
-    {
-        id: '13',
-        description: 'Psychology Lecture - Room 204',
-        createdAt: new Date('2024-01-20T02:00:00'),
-        author: 'Noah Taylor',
-        subject: 'Psychology',
-        time: '2:00 PM'
-    },
-    {
-        id: '14',
-        description: 'Statistics Class - Lab C',
-        createdAt: new Date('2024-01-21T09:00:00'),
-        author: 'Sophia Davis',
-        subject: 'Statistics',
-        time: '9:00 AM'
-    },
-    {
-        id: '15',
-        description: 'Programming Workshop - Lab D',
-        createdAt: new Date('2024-01-21T01:00:00'),
-        author: 'James Anderson',
-        subject: 'Programming',
-        time: '1:00 PM'
-    },
-    {
-        id: '16',
-        description: 'Environmental Science - Room 502',
-        createdAt: new Date('2024-01-22T11:00:00'),
-        author: 'Amelia Garcia',
-        subject: 'Environmental Science',
-        time: '11:00 AM'
-    },
-    {
-        id: '17',
-        description: 'Health Science Lecture - Room 303',
-        createdAt: new Date('2024-01-23T08:00:00'),
-        author: 'Benjamin Rodriguez',
-        subject: 'Health Science',
-        time: '8:00 AM'
-    },
-    {
-        id: '18',
-        description: 'Geography Seminar - Room 401',
-        createdAt: new Date('2024-01-24T03:00:00'),
-        author: 'Mia Martinez',
-        subject: 'Geography',
-        time: '3:00 PM'
-    },
-    {
-        id: '19',
-        description: 'French Language Class - Room 202',
-        createdAt: new Date('2024-01-25T12:00:00'),
-        author: 'William Hernandez',
-        subject: 'French',
-        time: '12:00 PM'
-    },
-    {
-        id: '20',
-        description: 'Robotics Workshop - Lab B',
-        createdAt: new Date('2024-01-26T04:00:00'),
-        author: 'Elijah Hall',
-        subject: 'Robotics',
-        time: '4:00 PM'
-    }
-];
-
 class Timetable {
-    #_objs;
-
-    constructor(objs = []) {
-        this.#_objs = objs;
+    constructor(objInf) {
+        this.objInf = objInf;  // Инициализация с данными
     }
 
-    getObjs(skip = 0, top = 10, filterConfig = {}) {
-        let filteredObjs = [...this.#_objs];
-        if (filterConfig.author) {
-            filteredObjs = filteredObjs.filter(obj => obj.author === filterConfig.author);
+    async getObjs(filterConfig = {}) {
+        // Получение данных с сервера (по умолчанию все объекты)
+        const queryParams = new URLSearchParams(filterConfig).toString();
+        const response = await fetch(`/api/timetable?${queryParams}`);
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Error fetching timetable data');
         }
-        if (filterConfig.subject) {
-            filteredObjs = filteredObjs.filter(obj => obj.subject === filterConfig.subject);
+    }
+
+    async addObj(obj) {
+        // Отправляем POST-запрос на добавление нового объекта в расписание
+        const response = await fetch('/api/timetable', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(obj),
+        });
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Error adding timetable object');
         }
-        if (filterConfig.createdAt) {
-            filteredObjs = filteredObjs.filter(obj =>
-                new Date(obj.createdAt).toISOString().slice(0, 10) === filterConfig.createdAt
-            );
+    }
+
+    async removeObj(id) {
+        // Отправляем DELETE-запрос на удаление объекта по ID
+        const response = await fetch(`/api/timetable/${id}`, {
+            method: 'DELETE',
+        });
+        if (!response.ok) {
+            throw new Error('Error removing timetable object');
         }
-        filteredObjs.sort((a, b) => b.createdAt - a.createdAt);
-        return filteredObjs.slice(skip, skip + top);
     }
 
-    getObj(id) {
-        return this.#_objs.find(obj => obj.id === id);
-    }
-
-    validateObj(obj) {
-        return obj && obj.id && obj.description && obj.author && obj.createdAt;
-    }
-
-    addObj(obj) {
-        if (this.validateObj(obj)) {
-            this.#_objs.push(obj);
-            return true;
+    async editObj(id, newProps) {
+        // Отправляем PUT-запрос на обновление объекта по ID
+        const response = await fetch(`/api/timetable/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newProps),
+        });
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Error editing timetable object');
         }
-        return false;
-    }
-
-    editObj(id, newProps) {
-        const obj = this.getObj(id);
-        if (obj) {
-            Object.assign(obj, newProps);
-            return true;
-        }
-        return false;
-    }
-
-    removeObj(id) {
-        const index = this.#_objs.findIndex(obj => obj.id === id);
-        if (index !== -1) {
-            this.#_objs.splice(index, 1);
-            return true;
-        }
-        return false;
-    }
-
-    clear() {
-        this.#_objs = [];
     }
 }

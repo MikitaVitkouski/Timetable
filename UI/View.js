@@ -1,38 +1,32 @@
 class View {
     constructor(containerId) {
-        this.container = document.getElementById(containerId);
+        this.containerId = containerId;
     }
 
-    displayObjs(objList) {
-        this.container.innerHTML = '';
-        objList.forEach(obj => this.addObjToDOM(obj));
-    }
-
-    addObjToDOM(obj) {
-        const objElement = document.createElement('div');
-        objElement.classList.add('obj');
-        objElement.setAttribute('data-id', obj.id);
-        objElement.innerHTML = `
-            <h3>${obj.subject}</h3>
-            <p>${obj.description}</p>
-            <p>Автор: ${obj.author}</p>
-            <p>Дата: ${obj.createdAt.toLocaleString()}</p>
-            ${user ? `<button class="delete-btn" data-id="${obj.id}">Удалить</button>
-                      <button class="edit-btn" data-id="${obj.id}">Редактировать</button>` : ''}
-        `;
-
-        this.container.appendChild(objElement);
-    }
-
-    removeObjFromDOM(id) {
-        const objElement = this.container.querySelector(`[data-id="${id}"]`);
-        if (objElement) this.container.removeChild(objElement);
-    }
-
-    updateObjInDOM(id, newProps) {
-        const objElement = this.container.querySelector(`[data-id="${id}"]`);
-        if (objElement && newProps.description) {
-            objElement.querySelector('p:nth-child(2)').textContent = newProps.description;
+    // Отображаем объекты расписания на странице
+    displayObjs(objs) {
+        const container = document.getElementById(this.containerId);
+        container.innerHTML = '';  // Очищаем контейнер перед отображением
+        if (objs.length === 0) {
+            container.innerHTML = '<p>No records found.</p>';
         }
+        objs.forEach(obj => {
+            container.innerHTML += `
+                <div id="obj-${obj.id}">
+                    <h4>${obj.subject}</h4>
+                    <p>${obj.description}</p>
+                    <p>Автор: ${obj.author}</p>
+                    <p>Время: ${obj.time}</p>
+                    <p>Дата создания: ${new Date(obj.createdAt).toLocaleString()}</p>
+                    <button onclick="controller.removeObj(${obj.id})">Удалить</button>
+                    <button onclick="controller.editObj(${obj.id}, ${JSON.stringify(obj)})">Редактировать</button>
+                </div>
+            `;
+        });
+    }
+
+    // Показываем уведомление
+    showNotification(message) {
+        alert(message);
     }
 }
